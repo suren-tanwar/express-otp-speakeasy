@@ -117,22 +117,12 @@ app.get('/protected-resource', verifyToken, checkClaims(['admin']), (req, res) =
   res.json({ message: 'This is a protected resource for admins.' });
 });
 
+// Another protected endpoint that requires different claims
+app.post('/protected-action', verifyToken, checkClaims(['write']), (req, res) => {
+    res.json({ message: 'This is a protected action for users with write permissions.' });
+  });
 // Port where project is run
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-// In this the /register-user endpoint allows users to register and get an OTP URI and JWT token. The /protected-resource endpoint is a protected resource that requires the 'admin' claim.
-// Make sure to replace 'your-secret-key' with a strong secret key in both the jwt.sign and jwt.verify calls.
-
-//  1. http://localhost:3000/generate-otp-uri
-// {"username": "john_doe", "issuer": "YourApp"}
-
-// http://localhost:3000/verify-otp
-// {"username": "john_doe", "otp": "123456", "secret": "tt"}
-
-// http://localhost:3000/register-user
-// {"username": "john_doe", "issuer": "YourApp", "claims": ["admin", "read"]}
-
-
-// http://localhost:3000/protected-resource/
